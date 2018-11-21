@@ -14,7 +14,7 @@ after_success:
   - docker build -t mohsinkarim/multi-server ./server
   - docker build -t mohsinkarim/multi-worker ./worker
 
-  - echo "$pd" | docker login -u "user" --password-stdin
+  - echo "$pd" | docker login -u "$user" --password-stdin
 
   - docker push mohsinkarim/multi-client
   - docker push mohsinkarim/multi-nginx
