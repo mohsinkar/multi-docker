@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t mohsinkarim/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run mohsinkarim/react-test npm run test -- --coverage
+
+after_success:
+  - docker build -t mohsinkarim/multi-client ./client
+  - docker build -t mohsinkarim/multi-nginx ./nginx
+  - docker build -t mohsinkarim/multi-server ./server
+  - docker build -t mohsinkarim/multi-worker ./worker
+
+  - echo "$pd" | docker login -u "user" --password-stdin
+
+  - docker push mohsinkarim/multi-client
+  - docker push mohsinkarim/multi-nginx
+  - docker push mohsinkarim/multi-server
+  - docker push mohsinkarim/multi-worker
